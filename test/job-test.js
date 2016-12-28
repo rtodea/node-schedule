@@ -319,6 +319,50 @@ module.exports = {
       }, 3250);
 
       clock.tick(3250);
+    },
+    "Runs the correct scheduled job when creating two jobs with the same name": function(test) {
+      //test.expect(3);
+      var jobName = 'jobName';
+      var firstJob = new schedule.Job(jobName, function() {
+        console.log(clock);
+        test.ok(true); // this should not be called
+      });
+
+      firstJob.schedule({
+        second: null // fire every second
+      });
+
+      /*
+       *
+       * -------------------------> [time]
+       * |        |      |
+       * 0000     |      |
+       *          1000   |
+       *                 2000
+       *
+       *  firstJob
+       *      firstJob
+       *             secondJob
+       *                 secondJob + firstJob
+       *
+       */
+      var secondJob;
+      setTimeout(function () {
+        secondJob = new schedule.Job(jobName, function () {
+          console.log(clock);
+          test.ok(true);
+        });
+        secondJob.schedule({ second: null });
+        test.equal(schedule.scheduledJobs[jobName], secondJob);
+      }, 250);
+
+      setTimeout(function () {
+        firstJob.cancel();
+        secondJob.cancel();
+        test.done();
+      }, 2500);
+
+      clock.tick(2500);
     }
   },
   "#schedule({...}, {...})": {
