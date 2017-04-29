@@ -222,7 +222,7 @@ module.exports = {
 
       clock.tick(5000);
     },
-    "Reschedule jobs from every minutes to every second": function(test) {
+    "Reschedule jobs from every minute to every second": function(test) {
       test.expect(3);
 
       var timeout = 60 * 1000;

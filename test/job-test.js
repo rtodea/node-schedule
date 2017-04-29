@@ -322,7 +322,7 @@ module.exports = {
     },
     "Runs the correct scheduled job when creating two jobs with the same name": function(test) {
       test.expect(4);
-      var jobName = 'jobName';
+      var jobName = 'duplicateJobName';
       var firstJob = new schedule.Job(jobName, function() {
         test.ok(false, 'this job should be overwritten by the second job with the same name');
       });
@@ -341,9 +341,9 @@ module.exports = {
         test.equal(firstJob.nextInvocation(), null);
         secondJob.cancel();
         test.done();
-      }, 3000);
+      }, 2000);
 
-      clock.tick(3000);
+      clock.tick(2000);
     }
   },
   "#schedule({...}, {...})": {
