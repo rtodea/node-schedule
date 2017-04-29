@@ -188,6 +188,20 @@ var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * 
 });
 ```
 
+### Listing the scheduled jobs
+`schedule.scheduledJobs` is an object containing all the scheduled jobs.
+
+The keys are of two types:
+
+1. `"<Anonymous Job N>"` where `N` represents the anonymous job order.
+2. the actual job name for named jobs
+
+_Job names keys_ If a job was created via `new schedule.Job('job name', ...)` then the key
+is the `'job name'`.
+
+```js
+schedule.scheduledJobs
+```
 
 ## Contributing
 

@@ -321,48 +321,29 @@ module.exports = {
       clock.tick(3250);
     },
     "Runs the correct scheduled job when creating two jobs with the same name": function(test) {
-      //test.expect(3);
+      test.expect(4);
       var jobName = 'jobName';
       var firstJob = new schedule.Job(jobName, function() {
-        console.log(clock);
-        test.ok(true); // this should not be called
+        test.ok(false, 'this job should be overwritten by the second job with the same name');
       });
 
-      firstJob.schedule({
-        second: null // fire every second
+      firstJob.schedule({ second: null }); // fire every second (i.e. every 1000 ms)
+
+      var secondJob = new schedule.Job(jobName, function () {
+        test.ok(true);
       });
 
-      /*
-       *
-       * -------------------------> [time]
-       * |        |      |
-       * 0000     |      |
-       *          1000   |
-       *                 2000
-       *
-       *  firstJob
-       *      firstJob
-       *             secondJob
-       *                 secondJob + firstJob
-       *
-       */
-      var secondJob;
-      setTimeout(function () {
-        secondJob = new schedule.Job(jobName, function () {
-          console.log(clock);
-          test.ok(true);
-        });
-        secondJob.schedule({ second: null });
-        test.equal(schedule.scheduledJobs[jobName], secondJob);
-      }, 250);
+      test.equal(schedule.scheduledJobs[jobName], firstJob);
+      secondJob.schedule({ second: null });
+      test.equal(schedule.scheduledJobs[jobName], secondJob);
 
       setTimeout(function () {
-        firstJob.cancel();
+        test.equal(firstJob.nextInvocation(), null);
         secondJob.cancel();
         test.done();
-      }, 2500);
+      }, 3000);
 
-      clock.tick(2500);
+      clock.tick(3000);
     }
   },
   "#schedule({...}, {...})": {
