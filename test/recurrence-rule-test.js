@@ -11,16 +11,16 @@ var base = new Date(2010, 3, 29, 12, 30, 15, 0);
 var baseMs = base.getTime();
 
 module.exports = {
-  "setUp": function(cb) {
+  "setUp": cb => {
     clock = sinon.useFakeTimers(baseMs);
     cb();
   },
-  "tearDown": function(cb) {
+  "tearDown": cb => {
     clock.restore();
     cb();
   },
   "#nextInvocationDate(Date)": {
-    "next second": function(test) {
+    "next second": test => {
       var rule = new schedule.RecurrenceRule();
       rule.second = null;
 
@@ -29,7 +29,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 30, 16, 0), next);
       test.done();
     },
-    "next 25th second": function(test) {
+    "next 25th second": test => {
       var rule = new schedule.RecurrenceRule();
       rule.second = 25;
 
@@ -38,7 +38,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 30, 25, 0), next);
       test.done();
     },
-    "next 5th second (minutes incremented)": function(test) {
+    "next 5th second (minutes incremented)": test => {
       var rule = new schedule.RecurrenceRule();
       rule.second = 5;
 
@@ -47,7 +47,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 31, 5, 0), next);
       test.done();
     },
-    "next 40th minute": function(test) {
+    "next 40th minute": test => {
       var rule = new schedule.RecurrenceRule();
       rule.minute = 40;
 
@@ -56,7 +56,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 40, 0, 0), next);
       test.done();
     },
-    "next 1st minute (hours incremented)": function(test) {
+    "next 1st minute (hours incremented)": test => {
       var rule = new schedule.RecurrenceRule();
       rule.minute = 1;
 
@@ -65,7 +65,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 13, 1, 0, 0), next);
       test.done();
     },
-    "next 23rd hour": function(test) {
+    "next 23rd hour": test => {
       var rule = new schedule.RecurrenceRule();
       rule.hour = 23;
 
@@ -74,7 +74,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 23, 0, 0, 0), next);
       test.done();
     },
-    "next 3rd hour (days incremented)": function(test) {
+    "next 3rd hour (days incremented)": test => {
       var rule = new schedule.RecurrenceRule();
       rule.hour = 3;
 
@@ -83,7 +83,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 3, 0, 0, 0), next);
       test.done();
     },
-    "next Friday": function(test) {
+    "next Friday": test => {
       var rule = new schedule.RecurrenceRule();
       rule.dayOfWeek = 5;
 
@@ -92,7 +92,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
-    "next Monday (months incremented)": function(test) {
+    "next Monday (months incremented)": test => {
       var rule = new schedule.RecurrenceRule();
       rule.dayOfWeek = 1;
 
@@ -101,7 +101,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 4, 3, 0, 0, 0, 0), next);
       test.done();
     },
-    "next 30th date": function(test) {
+    "next 30th date": test => {
       var rule = new schedule.RecurrenceRule();
       rule.date = 30;
 
@@ -110,7 +110,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
-    "next 5th date (months incremented)": function(test) {
+    "next 5th date (months incremented)": test => {
       var rule = new schedule.RecurrenceRule();
       rule.date = 5;
 
@@ -119,7 +119,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 4, 5, 0, 0, 0, 0), next);
       test.done();
     },
-    "next October": function(test) {
+    "next October": test => {
       var rule = new schedule.RecurrenceRule();
       rule.month = 9;
 
@@ -128,7 +128,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 9, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    "next February (years incremented)": function(test) {
+    "next February (years incremented)": test => {
       var rule = new schedule.RecurrenceRule();
       rule.month = 1;
 
@@ -137,7 +137,7 @@ module.exports = {
       test.deepEqual(new Date(2011, 1, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    "in the year 2040": function(test) {
+    "in the year 2040": test => {
       var rule = new schedule.RecurrenceRule();
       rule.year = 2040;
 
@@ -146,7 +146,7 @@ module.exports = {
       test.deepEqual(new Date(2040, 0, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    "using past year": function(test) {
+    "using past year": test => {
       var rule = new schedule.RecurrenceRule();
       rule.year = 2000;
 
@@ -155,7 +155,7 @@ module.exports = {
       test.equal(null, next);
       test.done();
     },
-    "using mixed time components": function(test) {
+    "using mixed time components": test => {
       var rule = new schedule.RecurrenceRule();
       rule.second = 50;
       rule.minute = 5;
@@ -177,7 +177,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 1, 0, 0, 0, 0), next);
       test.done();
     }*/
-    "returns null when no invocations left": function(test) {
+    "returns null when no invocations left": test => {
       var rule = new schedule.RecurrenceRule();
       rule.year = 2000;
 
@@ -186,7 +186,7 @@ module.exports = {
       test.strictEqual(null, next);
       test.done();
     },
-    "specify span of components using Range": function(test) {
+    "specify span of components using Range": test => {
       var rule = new schedule.RecurrenceRule();
       rule.minute = new schedule.Range(4, 6);
 
@@ -206,7 +206,7 @@ module.exports = {
 
       test.done();
     },
-    "specify intervals within span of components using Range with step": function(test) {
+    "specify intervals within span of components using Range with step": test => {
       var rule = new schedule.RecurrenceRule();
       rule.minute = new schedule.Range(4, 8, 2);
 
@@ -228,7 +228,7 @@ module.exports = {
 
       test.done();
     },
-    "specify span and explicit components using Array of Ranges and Numbers": function(test) {
+    "specify span and explicit components using Array of Ranges and Numbers": test => {
       var rule = new schedule.RecurrenceRule();
       rule.minute = [2, new schedule.Range(4, 6)];
 
@@ -251,7 +251,7 @@ module.exports = {
 
       test.done();
     },
-    "From 31th May schedule the 1st of every June": function(test) {
+    "From 31th May schedule the 1st of every June": test => {
       var rule = new schedule.RecurrenceRule();
       rule.second = 0;
       rule.minute = 0;
@@ -270,7 +270,7 @@ module.exports = {
 
       test.done();
     },
-    "With the year set should not loop indefinetely": function(test) {
+    "With the year set should not loop indefinetely": test => {
       var rule = new schedule.RecurrenceRule();
       rule.second = 0;
       rule.minute = 0;
